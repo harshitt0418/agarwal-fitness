@@ -1,0 +1,55 @@
+[
+  {
+    "id": "ENQ-1793519543315-921",
+    "createdAt": "2026-11-01T07:52:23.315Z",
+    "status": "pending",
+    "name": "Smoke Test User",
+    "phone": "+91 8878790000",
+    "email": "",
+    "city": "Bhilai",
+    "state": "",
+    "enquiryType": "general",
+    "interestedCategory": "",
+    "productId": "",
+    "productName": "",
+    "spaceDetails": null,
+    "message": "Smoke testing full stack setup"
+  },
+  {
+    "id": "ENQ-1793519376825-325",
+    "createdAt": "2026-11-01T07:49:36.825Z",
+    "status": "pending",
+    "name": "Suresh Patel",
+    "phone": "+91 96696 55517",
+    "email": "suresh.patel@gmail.com",
+    "city": "Bhilai",
+    "state": "Chhattisgarh",
+    "enquiryType": "gym_setup",
+    "interestedCategory": "Fitness Equipment",
+    "productId": "",
+    "productName": "",
+    "spaceDetails": {
+      "facilityType": "Society Clubhouse",
+      "approxSqFt": 3500,
+      "budgetTier": "standard",
+      "estimatedCapacity": 78
+    },
+    "message": "Planning 3500 sq ft society gymnasium setup with rubber flooring and cardio stations."
+  },
+  {
+    "id": "ENQ-1793518720586-470",
+    "createdAt": "2026-11-01T07:38:40.587Z",
+    "status": "pending",
+    "name": "Ashok Sharma",
+    "phone": "+91 9876543210",
+    "email": "ashok@example.com",
+    "city": "",
+    "state": "",
+    "enquiryType": "gym_setup",
+    "interestedCategory": "",
+    "productId": "",
+    "productName": "",
+    "spaceDetails": null,
+    "message": "Planning 2000 sqft gym setup in Raipur"
+  }
+]

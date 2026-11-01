@@ -1,0 +1,28 @@
+{
+  "name": "agrawal-sports-and-fitness",
+  "version": "1.0.0",
+  "description": "Premium full-stack MERN website for Agrawal Sports and Fitness (Bhilai, Chhattisgarh, India)",
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "test": "node smoke_test.js",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "mern",
+    "sports-equipment",
+    "fitness-equipment",
+    "gym-setup",
+    "react",
+    "express",
+    "mongodb"
+  ],
+  "author": "Agrawal Sports and Fitness Engineering Team",
+  "license": "ISC"
+}
