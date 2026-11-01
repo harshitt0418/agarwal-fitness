@@ -21,6 +21,28 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5050;
 
+// Lazy / cached DB connection for serverless & standalone environments
+let dbConnectionPromise = null;
+const ensureDBConnected = async () => {
+  if (!dbConnectionPromise) {
+    dbConnectionPromise = connectDB().catch(err => {
+      console.warn('[MongoDB] Init error:', err.message);
+      return false;
+    });
+  }
+  return dbConnectionPromise;
+};
+
+// Middleware to ensure DB connection is initialized
+app.use(async (req, res, next) => {
+  try {
+    await ensureDBConnected();
+  } catch (err) {
+    // Non-blocking fallback
+  }
+  next();
+});
+
 // Security & middleware
 app.use(helmet({
   crossOriginResourcePolicy: false,
@@ -72,7 +94,7 @@ app.use('/api/*', (req, res) => {
   });
 });
 
-// Serve static frontend from client/dist if built
+// Serve static frontend from client/dist if built (for monolithic production mode)
 const clientDistDir = path.join(__dirname, '..', '..', 'client', 'dist');
 if (fs.existsSync(clientDistDir)) {
   app.use(express.static(clientDistDir));
@@ -81,18 +103,27 @@ if (fs.existsSync(clientDistDir)) {
   });
 }
 
-// Start server
-const startServer = async () => {
-  await connectDB();
-  app.listen(PORT, () => {
-    console.log(`=======================================================`);
-    console.log(` ASF BACKEND RUNNING: http://localhost:${PORT}`);
-    console.log(` Health check: http://localhost:${PORT}/api/health`);
-    console.log(` Products API: http://localhost:${PORT}/api/products`);
-    console.log(` Categories API: http://localhost:${PORT}/api/categories`);
-    console.log(` Company API: http://localhost:${PORT}/api/company`);
-    console.log(`=======================================================`);
-  });
-};
+// Start standalone server when not in Vercel serverless environment
+if (!process.env.VERCEL) {
+  ensureDBConnected().then(() => {
+    const serverInstance = app.listen(PORT, () => {
+      console.log(`=======================================================`);
+      console.log(` ASF BACKEND RUNNING: http://localhost:${PORT}`);
+      console.log(` Health check: http://localhost:${PORT}/api/health`);
+      console.log(` Products API: http://localhost:${PORT}/api/products`);
+      console.log(` Categories API: http://localhost:${PORT}/api/categories`);
+      console.log(` Company API: http://localhost:${PORT}/api/company`);
+      console.log(`=======================================================`);
+    });
 
-startServer();
+    serverInstance.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`[Express] Port ${PORT} already active. Reusing running server.`);
+      } else {
+        console.error('[Express Server Error]', err);
+      }
+    });
+  });
+}
+
+export default app;
